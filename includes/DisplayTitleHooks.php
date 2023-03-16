@@ -5,6 +5,8 @@ use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
 
 class DisplayTitleHooks {
+	
+	public const CACHE_TIME = 60 * 60 * 24 * 7;
 
 	/**
 	 * Implements ParserFirstCallInit hook.
@@ -276,6 +278,18 @@ class DisplayTitleHooks {
 		} else {
 			$wikipage = new WikiPage( $title );
 		}
+
+		$cacheType = $GLOBALS['wgDisplayTitleCacheType'];
+		if ( $cacheType ) {
+			$cacheStore = ObjectCache::getInstance( $cacheType );
+			$cacheKey = sprintf("displaytitle:%s:%s", $title->getArticleID(), $wikipage->getLatest() );
+			$cacheValue = $cacheStore->get( $cacheKey );
+			if ( $cacheValue ) {
+				$displaytitle = $wrap ? new HtmlArmor( $cacheValue ) : $cacheValue;
+				return true;
+			}
+		}
+
 		$redirect = false;
 		if ( $GLOBALS['wgDisplayTitleFollowRedirects'] ) {
 			$redirectTarget = $wikipage->getRedirectTarget();
@@ -296,6 +310,9 @@ class DisplayTitleHooks {
 			if ( trim( str_replace( '&#160;', '', strip_tags( $value ) ) ) !== '' &&
 				$value !== $originalPageName ) {
 				$displaytitle = $value;
+				if ( $cacheType ) {
+					$cacheStore->set( $cacheKey, $displaytitle, self::CACHE_TIME );
+				}
 				if ( $wrap ) {
 					$displaytitle = new HtmlArmor( $displaytitle );
 				}
@@ -303,6 +320,9 @@ class DisplayTitleHooks {
 			}
 		} elseif ( $redirect ) {
 			$displaytitle = $title->getPrefixedText();
+			if ( $cacheType ) {
+				$cacheStore->set( $cacheKey, $displaytitle, self::CACHE_TIME );
+			}
 			if ( $wrap ) {
 				$displaytitle = new HtmlArmor( $displaytitle );
 			}
