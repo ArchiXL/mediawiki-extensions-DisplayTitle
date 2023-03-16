@@ -43,6 +43,9 @@
 		},
 		"DisplayTitleFollowRedirects": {
 			"value": true
+		},
+		"DisplayTitleCacheType": {
+			"value": false
 		}
 	},
 	"manifest_version": 2
