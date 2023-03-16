@@ -5,6 +5,8 @@ use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
 
 class DisplayTitleHooks {
+	
+	public const CACHE_TIME = 60 * 60 * 24 * 7;
 
 	/**
 	 * Implements ParserFirstCallInit hook.
