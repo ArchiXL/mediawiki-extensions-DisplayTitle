@@ -279,15 +279,11 @@ class DisplayTitleHooks {
 			$wikipage = new WikiPage( $title );
 		}
 
-		$cacheType = $GLOBALS['wgDisplayTitleCacheType'];
-		if ( $cacheType ) {
-			$cacheStore = ObjectCache::getInstance( $cacheType );
-			$cacheKey = sprintf("displaytitle:%s:%s", $title->getArticleID(), $wikipage->getLatest() );
-			$cacheValue = $cacheStore->get( $cacheKey );
-			if ( $cacheValue ) {
-				$displaytitle = $wrap ? new HtmlArmor( $cacheValue ) : $cacheValue;
-				return true;
-			}
+		$displayTitleCache = new DisplayTitleCache( $title );
+		$cachedDisplayTitle = $displayTitleCache->get();
+		if ( $cachedDisplayTitle ) {
+			$displaytitle = $wrap ? new HtmlArmor( $cachedDisplayTitle ) : $cachedDisplayTitle;
+			return true;
 		}
 
 		$redirect = false;
@@ -310,9 +306,7 @@ class DisplayTitleHooks {
 			if ( trim( str_replace( '&#160;', '', strip_tags( $value ) ) ) !== '' &&
 				$value !== $originalPageName ) {
 				$displaytitle = $value;
-				if ( $cacheType ) {
-					$cacheStore->set( $cacheKey, $displaytitle, self::CACHE_TIME );
-				}
+				$displayTitleCache->set( $value );
 				if ( $wrap ) {
 					$displaytitle = new HtmlArmor( $displaytitle );
 				}
@@ -320,14 +314,21 @@ class DisplayTitleHooks {
 			}
 		} elseif ( $redirect ) {
 			$displaytitle = $title->getPrefixedText();
-			if ( $cacheType ) {
-				$cacheStore->set( $cacheKey, $displaytitle, self::CACHE_TIME );
-			}
+			$displayTitleCache->set( $displaytitle );
 			if ( $wrap ) {
 				$displaytitle = new HtmlArmor( $displaytitle );
 			}
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @param $title
+	 * @return string
+	 */
+	public static function getCacheKey( $title ) {
+		$wikipage = new WikiPage( $title );
+		return sprintf("displaytitle:%s:%s", $title->getArticleID(), $wikipage->getLatest() );
 	}
 }

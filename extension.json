@@ -21,6 +21,7 @@
 		"DisplayTitleMagic": "includes/DisplayTitle.i18n.magic.php"
 	},
 	"AutoloadClasses": {
+		"DisplayTitleCache": "includes/DisplayTitleCache.php",
 		"DisplayTitleHooks": "includes/DisplayTitleHooks.php",
 		"DisplayTitleLuaLibrary": "includes/DisplayTitleLuaLibrary.php"
 	},
