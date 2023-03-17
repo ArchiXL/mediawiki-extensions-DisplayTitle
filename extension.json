@@ -33,7 +33,8 @@
 		"SkinTemplateNavigation::Universal": "DisplayTitleHooks::onSkinTemplateNavigation__Universal",
 		"HtmlPageLinkRendererBegin": "DisplayTitleHooks::onHtmlPageLinkRendererBegin",
 		"ScribuntoExternalLibraries": "DisplayTitleHooks::onScribuntoExternalLibraries",
-		"SelfLinkBegin": "DisplayTitleHooks::onSelfLinkBegin"
+		"SelfLinkBegin": "DisplayTitleHooks::onSelfLinkBegin",
+		"PageSaveComplete": "DisplayTitleHooks::onPageSaveComplete"
 	},
 	"config": {
 		"DisplayTitleHideSubtitle": {

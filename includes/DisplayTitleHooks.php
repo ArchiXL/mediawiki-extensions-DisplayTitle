@@ -4,9 +4,7 @@ use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
 
-class DisplayTitleHooks {
-	
-	public const CACHE_TIME = 60 * 60 * 24 * 7;
+class DisplayTitleHooks implements \MediaWiki\Storage\Hook\PageSaveCompleteHook {
 
 	/**
 	 * Implements ParserFirstCallInit hook.
@@ -330,5 +328,13 @@ class DisplayTitleHooks {
 	public static function getCacheKey( $title ) {
 		$wikipage = new WikiPage( $title );
 		return sprintf("displaytitle:%s:%s", $title->getArticleID(), $wikipage->getLatest() );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function onPageSaveComplete( $wikiPage, $user, $summary, $flags, $revisionRecord, $editResult ) {
+		$cache = new DisplayTitleCache( $wikiPage->getTitle() );
+		$cache->delete( $wikiPage->getRevisionRecord()->getId() );
 	}
 }

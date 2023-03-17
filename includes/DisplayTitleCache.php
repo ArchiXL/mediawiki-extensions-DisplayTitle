@@ -28,13 +28,13 @@ class DisplayTitleCache {
 	 * @param int $expiry
 	 * @return void
 	 */
-	public function set( $value, int $expiry = 60 * 60 * 7 ) {
+	public function set( $value, int $expiry = 60 * 60 * 7 ): bool {
 		wfDebugLog(
 			'DisplayTitle',
 			sprintf('[CACHE][NEW] Setting %s with key %s', $this->title->getFullText(), $this->getCacheKey() )
 		);
 
-		$this->getObjectCache()->set(
+		return $this->getObjectCache()->set(
 			$this->getCacheKey(),
 			$value,
 			$expiry
