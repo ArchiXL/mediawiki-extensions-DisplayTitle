@@ -331,9 +331,10 @@ class DisplayTitleHooks {
 	}
 
 	/**
-	 * @inheritDoc
+	 * @param WikiPage $wikiPage
+	 * @return void
 	 */
-	public static function onPageSaveComplete( $wikiPage, $user, $summary, $flags, $revisionRecord, $editResult ) {
+	public static function onPageSaveComplete( $wikiPage ) {
 		$cache = new DisplayTitleCache( $wikiPage->getTitle() );
 		$cache->delete( $wikiPage->getRevisionRecord()->getId() );
 	}
