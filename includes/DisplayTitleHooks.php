@@ -4,7 +4,7 @@ use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
 
-class DisplayTitleHooks implements \MediaWiki\Storage\Hook\PageSaveCompleteHook {
+class DisplayTitleHooks {
 
 	/**
 	 * Implements ParserFirstCallInit hook.
@@ -333,7 +333,7 @@ class DisplayTitleHooks implements \MediaWiki\Storage\Hook\PageSaveCompleteHook 
 	/**
 	 * @inheritDoc
 	 */
-	public function onPageSaveComplete( $wikiPage, $user, $summary, $flags, $revisionRecord, $editResult ) {
+	public static function onPageSaveComplete( $wikiPage, $user, $summary, $flags, $revisionRecord, $editResult ) {
 		$cache = new DisplayTitleCache( $wikiPage->getTitle() );
 		$cache->delete( $wikiPage->getRevisionRecord()->getId() );
 	}
