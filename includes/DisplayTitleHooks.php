@@ -319,8 +319,9 @@ class DisplayTitleHooks {
 			return true;
 		}
 
-		// If we get here, the display title is the same as the page name
-		$displayTitleCache->set( $displaytitle );
+		// If we get here, the display title is the same as the page name.
+		// The item will be cached for 7 hours
+		$displayTitleCache->set( $title->getPrefixedText() );
 		
 		return false;
 	}

@@ -62,8 +62,7 @@ class DisplayTitleCache {
 	 */
 	public function getCacheKey( int $revId = null ): string  {
 		return $this->getObjectCache()->makeKey(
-			'ext',
-			'displaytitle',
+			'ext.displaytitle',
 			$this->title->getArticleID(),
 			$revId ?? $this->title->getLatestRevID()
 		);
