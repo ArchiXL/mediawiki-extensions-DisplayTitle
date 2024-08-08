@@ -320,7 +320,7 @@ class DisplayTitleHooks {
 		}
 
 		// If we get here, the display title is the same as the page name
-		$displayTitleCache->set( $originalPageName );
+		$displayTitleCache->set( $displaytitle );
 		
 		return false;
 	}
